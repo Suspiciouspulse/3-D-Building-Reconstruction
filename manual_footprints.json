@@ -1,0 +1,28 @@
+{
+  "_comment": "Roofs outlined by eye on zoomed crops because the colour test missed them (their colour is the same as pale ground). Coordinates are content pixels. Automatic footprints lying mostly inside one of these are dropped. Entries with drawn_on = enhanced were traced on the AI-enhanced image and are only used when outlines come from that image; each is then checked against the original (it must stand out from its surroundings there too).",
+  "footprints": [
+    {"poly_px": [[189, 247], [216, 239], [230, 262], [202, 270]], "class": "pale", "drawn_on": "original",
+     "note": "large ribbed roof with a greenish, possibly translucent, tint; one roof or several bays cannot be told"},
+    {"poly_px": [[224, 264], [238, 259], [252, 287], [247, 290], [236, 290]], "class": "pale", "drawn_on": "original",
+     "note": "pink-brown ribbed roof; runs off the bottom edge of the image"},
+    {"poly_px": [[186, 258], [202, 270], [224, 264], [236, 290], [200, 290]], "class": "pale", "drawn_on": "original",
+     "note": "pale shed complex with white roof panels; outlined as one building, may be several; runs off the bottom edge"},
+    {"poly_px": [[183, 95], [198, 92], [201, 100], [185, 103]], "class": "grey", "drawn_on": "original",
+     "note": "blue-grey roof, probably sheet metal"},
+    {"poly_px": [[191, 79], [198, 77], [200, 91], [193, 92]], "class": "pale", "drawn_on": "original",
+     "note": "pale elongated roof"},
+    {"poly_px": [[107, 36], [115, 36], [115, 44], [107, 44]], "class": "pale", "drawn_on": "original",
+     "note": "pale square roof with a darker centre"},
+
+    {"poly_px": [[185.5, 103.5], [201.5, 100.5], [203, 108], [188, 111]], "class": "grey", "drawn_on": "enhanced",
+     "note": "grey flat roof adjoining the blue-grey roof to its north; may be the same building"},
+    {"poly_px": [[176, 116], [185, 114], [187, 121], [178, 123]], "class": "pale", "drawn_on": "enhanced",
+     "note": "pale square roof"},
+    {"poly_px": [[167, 136], [180, 134], [182, 152], [170, 153]], "class": "pale", "drawn_on": "enhanced",
+     "note": "large light-grey roof carrying small white rooftop elements"},
+    {"poly_px": [[203, 141], [213, 140], [214, 155], [204, 155]], "class": "pale", "drawn_on": "enhanced",
+     "note": "pale grey roof"},
+    {"poly_px": [[230, 45], [239, 44], [240, 57], [231, 58]], "class": "pale", "drawn_on": "enhanced",
+     "note": "two pale roofs side by side, outlined as one"}
+  ]
+}

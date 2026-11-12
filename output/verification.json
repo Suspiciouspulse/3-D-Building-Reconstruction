@@ -1,0 +1,247 @@
+{
+ "buildings": 231,
+ "by_roof_class": {
+  "red_tile": 159,
+  "bright": 46,
+  "grey": 21,
+  "pale": 5
+ },
+ "outlined_by_hand": 6,
+ "height_methods": {
+  "storey_guess": 160,
+  "shadow": 36,
+  "storey_guess_reduced_by_shadow_check": 35
+ },
+ "roof_shapes": {
+  "unknown (guess)": 138,
+  "gabled (from shading)": 11,
+  "flat (guess)": 72,
+  "gabled (guess)": 10
+ },
+ "measured_heights_m": {
+  "count": 36,
+  "median": 7.9,
+  "min": 5.4,
+  "max": 15.2
+ },
+ "shadow_readings": {
+  "roofs_with_open_ground_on_shadow_side": 200,
+  "median_px": 0.34,
+  "mean_px": 0.53,
+  "at_least_1px": 36,
+  "at_least_2px": 8
+ },
+ "footprint_check": {
+  "compared_against": "roof-coloured pixels from the colour classifier (NOT ground truth)",
+  "iou": 0.725,
+  "model_area_that_is_roof_coloured": 0.95,
+  "roof_coloured_area_covered_by_model": 0.754,
+  "roof_coloured_area_not_modelled_m2": 10557,
+  "modelled_footprint_total_m2": 41302,
+  "pale_or_unresolved_area_m2": 42391
+ },
+ "shadow_check": {
+  "tolerance_px": 1.0,
+  "roofs_compared": 200,
+  "disagreeing_by_more_than_tolerance_before": 35,
+  "heights_changed": [
+   {
+    "id": "B016",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B027",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B037",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B064",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B065",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B069",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B075",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B085",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B086",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B088",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B091",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B101",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B121",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B127",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B140",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B147",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B156",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B157",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B159",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B160",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B169",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B171",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B174",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B175",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B180",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B182",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B189",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B193",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B196",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B199",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B203",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B211",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B222",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B224",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B228",
+    "from_m": 6.0,
+    "to_m": 3.0
+   }
+  ],
+  "disagreeing_after": 0,
+  "mean_brightness_in_predicted_shadow": 130.3,
+  "mean_brightness_in_same_region_mirrored_to_sun_side": 134.2,
+  "median_brightness_of_lit_ground": 123.0
+ },
+ "estimated_height_error": {
+  "measured_from_shadow": "+/- 2.7 m from a +/- 0.5 px shadow reading, +/- 15 % from scale, and a factor x0.56 to x1.84 if the sun was at 60 or 80 deg instead of 72",
+  "storey_guess": "not measured; at least +/- one storey (3 m)"
+ },
+ "shadow_azimuth": {
+  "azimuth": 324.01,
+  "brightness_based": 324.01,
+  "brightness_amplitude_V": 2.15,
+  "colour_based": 20.54,
+  "colour_amplitude_fraction": 0.01,
+  "quadrants_brightness_based": [
+   296.4,
+   330.0,
+   331.0,
+   336.2
+  ],
+  "uncertainty_deg": 15.78
+ }
+}

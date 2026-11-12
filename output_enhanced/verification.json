@@ -1,0 +1,293 @@
+{
+ "outlines_traced_on": "enhanced",
+ "buildings": 254,
+ "outline_shapes": {
+  "rectangle": 63,
+  "rectilinear": 72,
+  "polygon": 119
+ },
+ "outlines_not_supported_by_original": [],
+ "shadow_width_original_vs_enhanced": {
+  "roofs": 203,
+  "correlation": 0.9,
+  "mean_px_original": 0.51,
+  "mean_px_enhanced": 0.54,
+  "note": "heights use the original reading only"
+ },
+ "by_roof_class": {
+  "red_tile": 178,
+  "bright": 49,
+  "grey": 18,
+  "pale": 9
+ },
+ "outlined_by_hand": 11,
+ "height_methods": {
+  "storey_guess": 171,
+  "shadow": 43,
+  "storey_guess_reduced_by_shadow_check": 40
+ },
+ "roof_shapes": {
+  "flat (guess)": 76,
+  "unknown (guess)": 134,
+  "gabled (from shading)": 25,
+  "gabled (guess)": 19
+ },
+ "measured_heights_m": {
+  "count": 43,
+  "median": 8.6,
+  "min": 5.5,
+  "max": 14.7
+ },
+ "shadow_readings": {
+  "roofs_with_open_ground_on_shadow_side": 219,
+  "median_px": 0.34,
+  "mean_px": 0.56,
+  "at_least_1px": 43,
+  "at_least_2px": 11
+ },
+ "footprint_check": {
+  "compared_against": "roof-coloured pixels from the colour classifier (NOT ground truth)",
+  "iou": 0.708,
+  "model_area_that_is_roof_coloured": 0.924,
+  "roof_coloured_area_covered_by_model": 0.752,
+  "roof_coloured_area_not_modelled_m2": 10151,
+  "modelled_footprint_total_m2": 42718,
+  "pale_or_unresolved_area_m2": 38992
+ },
+ "shadow_check": {
+  "tolerance_px": 1.0,
+  "roofs_compared": 219,
+  "disagreeing_by_more_than_tolerance_before": 40,
+  "heights_changed": [
+   {
+    "id": "B029",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B053",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B071",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B073",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B077",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B085",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B086",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B097",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B099",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B101",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B107",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B122",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B136",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B148",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B152",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B156",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B162",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B168",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B177",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B178",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B181",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B182",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B189",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B191",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B193",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B195",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B200",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B202",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B209",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B210",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B214",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B215",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B218",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B220",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B223",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B226",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B232",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B243",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B248",
+    "from_m": 6.0,
+    "to_m": 3.0
+   },
+   {
+    "id": "B252",
+    "from_m": 6.0,
+    "to_m": 3.0
+   }
+  ],
+  "disagreeing_after": 0,
+  "mean_brightness_in_predicted_shadow": 128.3,
+  "mean_brightness_in_same_region_mirrored_to_sun_side": 135.0,
+  "median_brightness_of_lit_ground": 122.0
+ },
+ "estimated_height_error": {
+  "measured_from_shadow": "+/- 2.7 m from a +/- 0.5 px shadow reading, +/- 15 % from scale, and a factor x0.56 to x1.84 if the sun was at 60 or 80 deg instead of 72",
+  "storey_guess": "not measured; at least +/- one storey (3 m)"
+ },
+ "shadow_azimuth": {
+  "azimuth": 324.01,
+  "brightness_based": 324.01,
+  "brightness_amplitude_V": 2.15,
+  "colour_based": 20.54,
+  "colour_amplitude_fraction": 0.01,
+  "quadrants_brightness_based": [
+   296.4,
+   330.0,
+   331.0,
+   336.2
+  ],
+  "uncertainty_deg": 15.78,
+  "enhanced_image_brightness_based": 323.32,
+  "enhanced_image_quadrants": [
+   294.7,
+   339.6,
+   324.9,
+   349.2
+  ]
+ }
+}

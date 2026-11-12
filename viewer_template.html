@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scene 3D model</title>
+<style>
+  :root { --bg:#e9edf0; --panel:#ffffffee; --ink:#1c2227; --muted:#5b6670; --line:#d5dbe0;
+          --measured:#0f8a7e; --guess:#d9822b; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--ink);
+               font:13px/1.45 system-ui, "Segoe UI", sans-serif; overflow:hidden; }
+  canvas { display:block; }
+  .panel { position:fixed; background:var(--panel); border:1px solid var(--line);
+           border-radius:8px; padding:10px 12px; box-shadow:0 2px 10px #0002; }
+  #top { top:12px; left:12px; max-width:330px; }
+  #info { top:12px; right:12px; width:320px; max-height:calc(100% - 24px); overflow:auto; }
+  summary { font-size:14px; font-weight:600; cursor:pointer; }
+  details[open] summary { margin-bottom:4px; }
+  h2 { font-size:13px; margin:0 0 6px; }
+  p { margin:4px 0; color:var(--muted); }
+  label { display:flex; align-items:center; gap:6px; margin:3px 0; cursor:pointer; }
+  table { border-collapse:collapse; width:100%; }
+  td { padding:2px 0; vertical-align:top; border-top:1px solid var(--line); }
+  td:first-child { color:var(--muted); width:42%; padding-right:8px; }
+  .tag { display:inline-block; padding:0 6px; border-radius:9px; color:#fff; font-size:11px; }
+  .measured { background:var(--measured); } .guess { background:var(--guess); }
+  .key { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; }
+  #err { color:#b00020; }
+  @media (max-width:760px) { #info { top:auto; bottom:12px; left:12px; right:12px; width:auto;
+                                      max-height:40%; } #top { right:12px; max-width:none; } }
+</style>
+</head>
+<body>
+<details id="top" class="panel" open>
+  <summary>Scene 3D model</summary>
+  <p id="assume"></p>
+  <label><input type="checkbox" id="cTrees" checked> Trees (heights are guesses)</label>
+  <label><input type="checkbox" id="cShadow" checked> Sun and cast shadows</label>
+  <label><input type="checkbox" id="cMethod"> Colour buildings by height source</label>
+  <p id="legend" hidden><span class="key" style="background:var(--measured)"></span>measured from
+     shadow &nbsp; <span class="key" style="background:var(--guess)"></span>guess</p>
+  <label>Vertical scale &times;<span id="vexL">1</span>
+    <input type="range" id="vex" min="1" max="4" step="0.5" value="1"></label>
+  <p>Drag to orbit, scroll to zoom, right-drag to pan. Click a building for its attributes.</p>
+  <p id="err"></p>
+</details>
+<div id="info" class="panel" hidden></div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
+</script>
+<script id="glb" type="application/octet-stream">__GLB_BASE64__</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const META = __META_JSON__;
+const $ = id => document.getElementById(id);
+if (innerHeight < 560 || innerWidth < 560) $('top').open = false;   // keep the model visible
+$('assume').textContent =
+  `${META.extent_m[0]} x ${META.extent_m[1]} m. Scale ${META.gsd_m_per_px} m/px (estimate). ` +
+  `Shadows point ${META.shadow_azimuth_deg} deg clockwise from image-up (measured). ` +
+  `Sun elevation ${META.sun_elevation_deg} deg (assumed). Not georeferenced. ` +
+  `Outlines and ground picture: ${META.outline_source_short}; heights: original image.`;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xe9edf0);
+const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 1, 5000);
+camera.position.set(-260, 330, 420);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0, 0);
+controls.maxPolarAngle = Math.PI / 2 - 0.02;
+controls.update();
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8f94, 1.1));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2);
+// glTF frame after the root rotation: +X = image right, +Y = up, -Z = image up
+const az = THREE.MathUtils.degToRad(META.sun_azimuth_deg);
+const el = THREE.MathUtils.degToRad(META.sun_elevation_deg);
+sun.position.set(Math.cos(el) * Math.sin(az), Math.sin(el), -Math.cos(el) * Math.cos(az))
+   .multiplyScalar(900);
+sun.castShadow = true;
+sun.shadow.mapSize.set(4096, 4096);
+const sc = sun.shadow.camera;
+sc.left = -420; sc.right = 420; sc.top = 420; sc.bottom = -420; sc.near = 100; sc.far = 2000;
+sun.shadow.bias = -0.0005;
+scene.add(sun);
+
+const pick = [];           // meshes that belong to buildings
+const groups = new Map();  // id -> node
+let trees = null, root = null, selected = null;
+const COL = { measured: new THREE.Color(0x0f8a7e), guess: new THREE.Color(0xd9822b),
+              hi: new THREE.Color(0x3355ff) };
+
+function b64ToBuffer(s) {
+  const bin = atob(s.trim());
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out.buffer;
+}
+
+new GLTFLoader().parse(b64ToBuffer($('glb').textContent), '', gltf => {
+  root = gltf.scene;
+  scene.add(root);
+  root.traverse(o => {
+    if (o.userData && o.userData.kind === 'trees') trees = o;
+    if (o.userData && o.userData.kind === 'building') groups.set(o.userData.id, o);
+    if (!o.isMesh) return;
+    let p = o, kind = null;
+    while (p) { if (p.userData && p.userData.kind) { kind = p.userData.kind; break; } p = p.parent; }
+    o.userData._owner = p;
+    if (kind === 'ground') { o.receiveShadow = true; return; }
+    o.castShadow = true;
+    o.receiveShadow = true;
+    if (kind === 'building') {
+      o.material = o.material.clone();
+      o.userData._base = o.material.color.clone();
+      pick.push(o);
+    }
+  });
+  render();
+}, e => { $('err').textContent = 'Could not load the model: ' + e; });
+
+function recolor() {
+  const byMethod = $('cMethod').checked;
+  for (const m of pick) {
+    const d = m.userData._owner.userData;
+    let c = byMethod ? (d.height_is_guess ? COL.guess : COL.measured) : m.userData._base;
+    m.material.color.copy(c);
+    m.material.emissive.copy(selected && m.userData._owner === selected ? COL.hi : new THREE.Color(0));
+    m.material.emissiveIntensity = 0.55;
+  }
+  $('legend').hidden = !byMethod;
+}
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const ROWS = [
+  ['height_m', 'Height to eave (m)'], ['ridge_height_m', 'Height to ridge (m)'],
+  ['floors', 'Floors'], ['height_method', 'Height source'], ['height_note', 'How'],
+  ['confidence', 'Confidence'], ['shadow_px', 'Shadow width (px)'],
+  ['shadow_status', 'Shadow reading'], ['footprint_area_m2', 'Footprint (m2)'],
+  ['footprint_shape', 'Outline'], ['roof_shape', 'Roof shape'], ['roof_shape_method', 'Roof source'],
+  ['ridge_azimuth_deg', 'Ridge direction (deg)'], ['roof_color', 'Roof colour'],
+  ['courtyard_m2', 'Courtyard inside outline (m2)'], ['damage', 'Damage'],
+  ['outline_source', 'Outline traced on'], ['outline_note', 'Outline note'],
+  ['shadow_px_enhanced_image', 'Shadow width in enhanced image (px, not used)'],
+];
+function show(node) {
+  selected = node;
+  const box = $('info');
+  if (!node) { box.hidden = true; recolor(); render(); return; }
+  const d = node.userData;
+  const tag = d.height_is_guess ? '<span class="tag guess">height is a guess</span>'
+                                : '<span class="tag measured">height measured</span>';
+  let h = `<h2>${esc(d.id)} ${tag}</h2><table>`;
+  for (const [k, label] of ROWS) {
+    if (d[k] === null || d[k] === undefined || d[k] === 0 && k === 'courtyard_m2') continue;
+    h += `<tr><td>${label}</td><td>${esc(d[k])}</td></tr>`;
+  }
+  box.innerHTML = h + '</table>';
+  box.hidden = false;
+  recolor(); render();
+}
+
+const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
+let downAt = null;
+renderer.domElement.addEventListener('pointerdown', e => { downAt = [e.clientX, e.clientY]; });
+renderer.domElement.addEventListener('pointerup', e => {
+  if (!downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 4) return;
+  mouse.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+  ray.setFromCamera(mouse, camera);
+  const hit = ray.intersectObjects(pick, false)[0];
+  show(hit ? hit.object.userData._owner : null);
+});
+
+$('cTrees').onchange = e => { if (trees) trees.visible = e.target.checked; render(); };
+$('cShadow').onchange = e => { sun.castShadow = e.target.checked; render(); };
+$('cMethod').onchange = () => { recolor(); render(); };
+$('vex').oninput = e => {
+  $('vexL').textContent = e.target.value;
+  if (root) root.scale.set(1, +e.target.value, 1);   // glTF up axis
+  render();
+};
+
+function render() { renderer.render(scene, camera); }
+controls.addEventListener('change', render);
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  render();
+});
+render();
+</script>
+</body>
+</html>
